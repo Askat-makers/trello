@@ -1,6 +1,7 @@
 import React from "react";
 import { Field, Form } from "react-final-form";
 import styled from "styled-components";
+//удали неиспользуемые импорты по проекту
 import { ArrowFunction } from "typescript";
 import { useAppDispatch } from "../../customHooks/hooks";
 import { ICard } from "../../models/ICard";
@@ -66,6 +67,8 @@ const index: React.FC<IAddCard> = ({ desk, user, setAddStatus }) => {
   const handleSubmit = ({ title }: { title: string }) => {
     if (!title) return;
     const card: ICard = {
+
+      //лучше и удобнее использовать uuid, даже в своих проектах (не критично)
       id: Date.now(),
       authorName: user.name,
       comments: [],
@@ -101,6 +104,7 @@ const index: React.FC<IAddCard> = ({ desk, user, setAddStatus }) => {
                       rows={3}
                       placeholder="Введите заголок для этой карточки"
                       onKeyPress={async (event: React.KeyboardEvent) => {
+                        //Deprecated symbol used, consult docs for better alternative
                         if (event.charCode === 13) {
                           await handleSubmit(event);
                           form.reset();

@@ -39,6 +39,10 @@ const initDesks: IDesk[] = [
   },
 ];
 
+//очень много закомментированного кода
+//в checkUser либо добавить логику, либо удалить его
+
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -76,6 +80,8 @@ export const userSlice = createSlice({
       // localStorage.setItem("desks", JSON.stringify(state.desks));
       // localStorage.setItem("cards", JSON.stringify(state.cards));
     },
+
+    //здесь лучше использовать полностью description, так как у нас есть в проекте Desk и можно подумать на опечатку
     saveDesc(
       state,
       { payload: { card, desc } }: PayloadAction<{ card: ICard; desc: string }>
@@ -84,6 +90,8 @@ export const userSlice = createSlice({
       updatedCard.description = desc;
       let idx = state.cards.findIndex((c) => c.id === card.id);
       state.cards.splice(idx, 1, updatedCard);
+
+      //везде forEach поменять на find
       state.desks.forEach((desk) => {
         if (desk.id === card.deskId) {
           desk.cards = state.cards;
@@ -92,6 +100,8 @@ export const userSlice = createSlice({
       // localStorage.setItem("desks", JSON.stringify(state.desks));
       // localStorage.setItem("cards", JSON.stringify(state.cards));
     },
+    //полностью карточку отправлять нехорошо, лучше отправить cardId и deskId, кроме них в экшене ничего не используется
+    //найти и поправить везде
     saveComment(
       state,
       {
@@ -130,6 +140,8 @@ export const userSlice = createSlice({
       // localStorage.setItem("desks", JSON.stringify(state.desks));
       // localStorage.setItem("cards", JSON.stringify(state.cards));
     },
+
+    //я бы назвала updateComment
     saveEditedComment(
       state,
       {
@@ -186,3 +198,8 @@ export const userSlice = createSlice({
     },
   },
 });
+
+//лучше было бы экспортировать сами экшены, используя деструктуризацию:
+export const {
+  createTask, deleteCard, deleteComment
+} = userSlice.actions;

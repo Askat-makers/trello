@@ -6,6 +6,7 @@ import { useAppDispatch } from "../../customHooks/hooks";
 import { IUser } from "../../models/IUser";
 import { userSlice } from "../../reducers/UserSlice";
 
+//стилизацию лучше перенести вниз, чтобы взгляд сразу падал на логику
 const ModalBody = styled.div`
   max-width: 550px;
   width: 100%;

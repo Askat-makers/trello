@@ -7,6 +7,8 @@ import Desks from "../../components/Desks";
 export default function index() {
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+
+  //зачем этот useEffect, если checkUser пустой?
   useEffect(() => {
     dispatch(userSlice.actions.checkUser());
   }, []);

@@ -71,7 +71,10 @@ const ModalCommentBlock = styled.div`
 
 const index: React.FC<ITaskModalProps> = ({ card, user, setCardDetails }) => {
   const dispatch = useAppDispatch();
+  //булевые переменные всегда лучше называть, начиная с is или has. Это относится и к useState
+  //const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [editStatus, setEditStatus] = useState<boolean>(false);
+  //const [isShowActionButtons, setIsShowActionButtons] = useState<boolean>(false);
   const [commentWritingStatus, setCommentWritingStatus] = useState<boolean>(
     false
   );
@@ -79,6 +82,8 @@ const index: React.FC<ITaskModalProps> = ({ card, user, setCardDetails }) => {
   const handleSubmitDesc = (data: { description: string }) => {
     dispatch(userSlice.actions.saveDesc({ card, desc: data.description }));
     setEditStatus(!editStatus);
+
+    //удаляй всё, что закомментировано по всему проекту
     // setCardDetails({ ...card, description: data.description });
   };
 

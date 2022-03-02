@@ -7,6 +7,8 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
+//компоненты в этой папке можно назвать так, как они используются в остальных компонентах, а для стилизации использовать Root
+//первый элемент вообще лучше называть Root, где это возможно
 const index: React.FC = ({ children }) => {
   return <Container>{children}</Container>;
 };

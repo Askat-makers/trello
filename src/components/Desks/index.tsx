@@ -56,8 +56,13 @@ export default function index() {
     cards: ICard[];
     user: IUser;
   }>((state) => state.user);
+  //из названия addStatus непонятно, за что отвечает переменная. Добавляет куда-то какой-то статус?
+  //Понятно только тебе, что делает данный useState. Нужно переименовать во что-то более подходящее
+  //И лучше всего поменьше использовать слово Status в useState. Наводит на мысль, что где-то есть какие-то статусы, и ты сетаешь им новое значение
   const [addStatus, setAddStatus] = useState<null | number>(null);
   const [cardDetails, setCardDetails] = useState<null | ICard>(null);
+
+  //Мне кажется, плохая идея использовать всю колонку, если тебе необходимо поменять только title
   const [titleEditStatus, setTitleEditStatus] = useState<null | IDesk>(null);
 
   const dispatch = useAppDispatch();
