@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ICard } from "../models/ICard";
-import { IComment } from "../models/IComment";
-import { IDesk } from "../models/IDesk";
-import { IUser } from "../models/IUser";
+import { v4 as uuid } from "uuid";
+import { ICard, IComment, IDesk, IUser } from "../types/types";
 
 interface IInitState {
   user: IUser;
@@ -20,22 +18,22 @@ const initDesks: IDesk[] = [
   {
     title: "TODO",
     cards: [],
-    id: 1,
+    id: uuid(),
   },
   {
     title: "in Progress",
     cards: [],
-    id: 2,
+    id: uuid(),
   },
   {
     title: "Testing",
     cards: [],
-    id: 3,
+    id: uuid(),
   },
   {
     title: "Done",
     cards: [],
-    id: 4,
+    id: uuid(),
   },
 ];
 
@@ -49,22 +47,6 @@ export const userSlice = createSlice({
       state.user = action.payload;
       state.desks = desks;
       state.cards = cards;
-      // localStorage.setItem("user", JSON.stringify(action.payload));
-      // localStorage.setItem("desks", JSON.stringify(desks));
-      // localStorage.setItem("cards", JSON.stringify(cards));
-    },
-    checkUser(state) {
-      // const user: IUser =
-      // JSON.parse(localStorage.getItem("user") || "null") || initialState.user;
-      // const desks: IDesk[] =
-      // JSON.parse(localStorage.getItem("desks") || "null") ||
-      // initialState.desks;
-      // const cards: ICard[] =
-      // JSON.parse(localStorage.getItem("cards") || "null") ||
-      // initialState.desks;
-      // state.user = user;
-      // state.desks = desks;
-      // state.cards = cards;
     },
     createTask(state, { payload: card }: PayloadAction<ICard>) {
       state.cards.push(card);
@@ -73,10 +55,8 @@ export const userSlice = createSlice({
           desk.cards.push(card);
         }
       });
-      // localStorage.setItem("desks", JSON.stringify(state.desks));
-      // localStorage.setItem("cards", JSON.stringify(state.cards));
     },
-    saveDesc(
+    saveDescription(
       state,
       { payload: { card, desc } }: PayloadAction<{ card: ICard; desc: string }>
     ) {
@@ -89,27 +69,23 @@ export const userSlice = createSlice({
           desk.cards = state.cards;
         }
       });
-      // localStorage.setItem("desks", JSON.stringify(state.desks));
-      // localStorage.setItem("cards", JSON.stringify(state.cards));
     },
     saveComment(
       state,
       {
-        payload: { card, comment },
-      }: PayloadAction<{ card: ICard; comment: IComment }>
+        payload: { cardId, deskId, comment },
+      }: PayloadAction<{ cardId: string; deskId: string; comment: IComment }>
     ) {
       state.cards.forEach((c) => {
-        if (c.id === card.id) {
+        if (c.id === cardId) {
           c.comments.push(comment);
         }
       });
       state.desks.forEach((desk) => {
-        if (desk.id === card.deskId) {
+        if (desk.id === deskId) {
           desk.cards = state.cards;
         }
       });
-      // localStorage.setItem("desks", JSON.stringify(state.desks));
-      // localStorage.setItem("cards", JSON.stringify(state.cards));
     },
     deleteComment(
       state,
@@ -127,10 +103,8 @@ export const userSlice = createSlice({
           desk.cards = state.cards;
         }
       });
-      // localStorage.setItem("desks", JSON.stringify(state.desks));
-      // localStorage.setItem("cards", JSON.stringify(state.cards));
     },
-    saveEditedComment(
+    updateComment(
       state,
       {
         payload: { title, comment },
@@ -150,11 +124,8 @@ export const userSlice = createSlice({
           desk.cards = state.cards;
         }
       });
-      // localStorage.setItem("desks", JSON.stringify(state.desks));
-      // localStorage.setItem("cards", JSON.stringify(state.cards));
     },
-
-    saveEditedDeskTitle(
+    updateDesk(
       state,
       {
         payload: { title, desk },
@@ -173,8 +144,6 @@ export const userSlice = createSlice({
           card.deskTitle = title;
         }
       });
-      // localStorage.setItem("desks", JSON.stringify(state.desks));
-      // localStorage.setItem("cards", JSON.stringify(state.cards));
     },
     deleteCard(state, { payload: card }: PayloadAction<ICard>) {
       state.cards = state.cards.filter((c) => c.id !== card.id);
@@ -186,3 +155,14 @@ export const userSlice = createSlice({
     },
   },
 });
+
+export const {
+  createTask,
+  deleteCard,
+  deleteComment,
+  saveComment,
+  saveDescription,
+  signIn,
+  updateComment,
+  updateDesk,
+} = userSlice.actions;
