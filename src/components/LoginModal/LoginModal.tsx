@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Modal } from "../shared/Modal";
+import { Modal } from "../shared";
 import { Field, Form } from "react-final-form";
 import { useAppDispatch } from "../../customHooks/hooks";
 import { IUser } from "../../types/types";

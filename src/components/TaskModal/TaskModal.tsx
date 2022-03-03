@@ -9,9 +9,9 @@ import {
   saveComment,
   saveDescription,
 } from "../../reducers/UserSlice";
-import { Modal } from "../shared/Modal";
-import { ModalSave } from "../shared/ModalSave";
-import { ModalField } from "../shared/ModalField";
+import { Modal } from "../shared";
+import { ModalSave } from "../shared";
+import { ModalField } from "../shared";
 import TaskModalComments from "./components/TaskModalComments";
 
 interface ITaskModalProps {
@@ -30,7 +30,12 @@ export const TaskModal: React.FC<ITaskModalProps> = ({
   const [isCommentWritting, setIsCommentWritting] = useState<boolean>(false);
 
   const handleSubmitDesc = (data: { description: string }) => {
-    dispatch(saveDescription({ card, desc: data.description }));
+    dispatch(
+      saveDescription({
+        cardId: card.id,
+        description: data.description,
+      })
+    );
     setIsEditDesc(!isEditDesc);
   };
 
@@ -46,7 +51,6 @@ export const TaskModal: React.FC<ITaskModalProps> = ({
     dispatch(
       saveComment({
         cardId: card.id,
-        deskId: card.deskId,
         comment,
       })
     );
@@ -54,7 +58,7 @@ export const TaskModal: React.FC<ITaskModalProps> = ({
   };
 
   const handleDeleteCard = () => {
-    dispatch(deleteCard(card));
+    dispatch(deleteCard({ cardId: card.id }));
     setCardDetails(null);
   };
 

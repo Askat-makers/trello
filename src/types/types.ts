@@ -24,5 +24,5 @@ export interface IUser {
 export interface IDesk {
   id: string;
   title: string;
-  cards: ICard[];
+  cards?: ICard[];
 }

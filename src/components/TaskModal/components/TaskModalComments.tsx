@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { useAppDispatch } from "../../../customHooks/hooks";
 import { ICard, IComment } from "../../../types/types";
 import { deleteComment, updateComment } from "../../../reducers/UserSlice";
-import { ModalSave } from "../../shared/ModalSave";
-import { ModalField } from "../../shared/ModalField";
+import { ModalSave } from "../../shared";
+import { ModalField } from "../../shared";
 
 interface ITaskModalComments {
   card: ICard;
@@ -16,14 +16,20 @@ const TaskModalComments: React.FC<ITaskModalComments> = ({ card }) => {
   const dispatch = useAppDispatch();
 
   const handleDelete = (comment: IComment) => {
-    dispatch(deleteComment({ card, comment }));
+    dispatch(
+      deleteComment({
+        cardId: card.id,
+        commentId: comment.id,
+      })
+    );
   };
 
   const handleSave = (data: IComment) => {
     dispatch(
       updateComment({
-        title: data.title,
-        comment: data,
+        commentTitle: data.title,
+        commentId: data.id,
+        cardId: data.cardId,
       })
     );
     setIsCommentEdit(null);
@@ -43,6 +49,7 @@ const TaskModalComments: React.FC<ITaskModalComments> = ({ card }) => {
               render={({ handleSubmit }) => (
                 <form onSubmit={handleSubmit}>
                   <Field
+                    initialValue={comment.title}
                     name="title"
                     render={({ input }) => (
                       <div>

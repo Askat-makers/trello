@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Card } from "../Card";
-import { Container } from "../../components/shared/Container";
+import { Container } from "../../components/shared";
 import { AddCard } from "../AddCard";
 import { TaskModal } from "../TaskModal";
 import { useAppDispatch, useAppSelector } from "../../customHooks/hooks";
@@ -25,8 +25,8 @@ export const Desks: React.FC = () => {
     isTitleEdit &&
       dispatch(
         updateDesk({
-          title: data.title,
-          desk: data,
+          deskTitle: data.title,
+          deskId: data.id,
         })
       );
     setIsTitleEdit(null);

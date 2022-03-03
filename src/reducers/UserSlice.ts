@@ -50,108 +50,73 @@ export const userSlice = createSlice({
     },
     createTask(state, { payload: card }: PayloadAction<ICard>) {
       state.cards.push(card);
-      state.desks.forEach((desk) => {
-        if (desk.id === card.deskId) {
-          desk.cards.push(card);
-        }
-      });
     },
     saveDescription(
       state,
-      { payload: { card, desc } }: PayloadAction<{ card: ICard; desc: string }>
+      {
+        payload: { cardId, description },
+      }: PayloadAction<{ cardId: string; description: string }>
     ) {
-      const updatedCard = { ...card };
-      updatedCard.description = desc;
-      let idx = state.cards.findIndex((c) => c.id === card.id);
-      state.cards.splice(idx, 1, updatedCard);
-      state.desks.forEach((desk) => {
-        if (desk.id === card.deskId) {
-          desk.cards = state.cards;
-        }
-      });
+      const updateCard = state.cards.find((card) => card.id === cardId);
+      updateCard && (updateCard.description = description);
     },
     saveComment(
       state,
       {
-        payload: { cardId, deskId, comment },
-      }: PayloadAction<{ cardId: string; deskId: string; comment: IComment }>
+        payload: { cardId, comment },
+      }: PayloadAction<{ cardId: string; comment: IComment }>
     ) {
-      state.cards.forEach((c) => {
-        if (c.id === cardId) {
-          c.comments.push(comment);
-        }
-      });
-      state.desks.forEach((desk) => {
-        if (desk.id === deskId) {
-          desk.cards = state.cards;
-        }
-      });
+      const updateCard = state.cards.find((card) => card.id === cardId);
+      updateCard && updateCard.comments.push(comment);
     },
     deleteComment(
       state,
       {
-        payload: { card, comment },
-      }: PayloadAction<{ card: ICard; comment: IComment }>
+        payload: { cardId, commentId },
+      }: PayloadAction<{ cardId: string; commentId: string }>
     ) {
-      state.cards.forEach((c) => {
-        if (c.id === card.id) {
-          c.comments = c.comments.filter((comm) => comm.id !== comment.id);
-        }
-      });
-      state.desks.forEach((desk) => {
-        if (desk.id === card.deskId) {
-          desk.cards = state.cards;
-        }
-      });
+      const updateCard = state.cards.find((card) => card.id === cardId);
+      updateCard &&
+        (updateCard.comments = updateCard.comments.filter(
+          (comment) => comment.id !== commentId
+        ));
     },
     updateComment(
       state,
       {
-        payload: { title, comment },
-      }: PayloadAction<{ title: string; comment: IComment }>
+        payload: { commentTitle, commentId, cardId },
+      }: PayloadAction<{
+        commentTitle: string;
+        commentId: string;
+        cardId: string;
+      }>
     ) {
-      state.cards.forEach((c) => {
-        if (c.id === comment.cardId) {
-          c.comments.forEach((comm) => {
-            if (comm.id === comment.id) {
-              comm.title = title;
-            }
-          });
-        }
-      });
-      state.desks.forEach((desk) => {
-        if (desk.id === comment.deskId) {
-          desk.cards = state.cards;
-        }
-      });
+      const updateCard = state.cards.find((card) => card.id === cardId);
+      if (!updateCard) return;
+      const updateComment = updateCard.comments.find(
+        (comment) => comment.id === commentId
+      );
+      updateComment && (updateComment.title = commentTitle);
     },
     updateDesk(
       state,
       {
-        payload: { title, desk },
-      }: PayloadAction<{ title: string; desk: IDesk }>
+        payload: { deskId, deskTitle },
+      }: PayloadAction<{ deskId: string; deskTitle: string }>
     ) {
-      state.desks.forEach((d) => {
-        if (d.id === desk.id) {
-          d.title = title;
-          d.cards.forEach((card) => {
-            card.deskTitle = title;
-          });
-        }
-      });
+      const updateDesk = state.desks.find((desk) => desk.id === deskId);
+      updateDesk && (updateDesk.title = deskTitle);
       state.cards.forEach((card) => {
-        if (card.deskId === desk.id) {
-          card.deskTitle = title;
+        if (card.deskId === deskId) {
+          card.deskTitle = deskTitle;
         }
       });
     },
-    deleteCard(state, { payload: card }: PayloadAction<ICard>) {
-      state.cards = state.cards.filter((c) => c.id !== card.id);
-      state.desks.forEach((d) => {
-        if (d.id === card.deskId) {
-          d.cards = d.cards.filter((c) => c.id !== card.id);
-        }
-      });
+    deleteCard(
+      state,
+      { payload: { cardId } }: PayloadAction<{ cardId: string }>
+    ) {
+      state.cards = state.cards.filter((card) => card.id !== cardId);
     },
   },
 });
